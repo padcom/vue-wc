@@ -131,8 +131,17 @@ function defineCustomElement(
 }
 
 customElements.define('test-component', class extends HTMLElement {
+  #placeholder: Text
+
+  constructor() {
+    super()
+
+    this.#placeholder = document.createTextNode('')
+    this.appendChild(this.#placeholder)
+  }
+
   set test(newVal: any) {
-    console.log('Setting test to', newVal)
+    this.#placeholder.data = newVal
   }
 })
 
