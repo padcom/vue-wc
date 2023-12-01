@@ -70,16 +70,6 @@ function defineCustomElement(
     return result.component
   }
 
-  function exposeThingsOnInstance(
-    instance: Node,
-    things: Record<string, any>,
-    options: Omit<PropertyDescriptor, 'value' | 'get' | 'set'> = {},
-  ) {
-    Object.entries(things).forEach(([name, value]) => {
-      Object.defineProperty(instance, name, { ...options, value })
-    })
-  }
-
   function exposeProps(instance: any, element: Node) {
     Object.keys(instance.props).forEach(prop => {
       Object.defineProperty(element, prop, {
@@ -93,7 +83,7 @@ function defineCustomElement(
     })
   }
 
-  function exposeThings(instance: any, element: Node) {
+  function exposeExposed(instance: any, element: Node) {
     const entries = Object.fromEntries(Object.keys(instance.exposed).map(exposed => {
       const value = typeof instance.exposed[exposed] === 'function'
         ? instance.exposed[exposed].bind(instance)
@@ -102,7 +92,9 @@ function defineCustomElement(
       return [exposed, value]
     }))
 
-    exposeThingsOnInstance(element, entries)
+    Object.entries(entries).forEach(([name, value]) => {
+      Object.defineProperty(element, name, { value, writable: false })
+    })
   }
 
   function exposeEvents(instance: any, element: Node) {
@@ -132,7 +124,7 @@ function defineCustomElement(
       this.#root = createRoot(this)
       this.#instance = createVueComponentInstance(this.#root, this.#slots)
       exposeProps(this.#instance, this)
-      exposeThings(this.#instance, this)
+      exposeExposed(this.#instance, this)
       exposeEvents(this.#instance, this)
     }
   }

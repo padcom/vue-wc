@@ -13,7 +13,7 @@ const emit = defineEmits(['hello-world'])
 
 function sayHello() {
   console.log('Hello', props.name)
-  emit('hello-world', { props })
+  emit('hello-world', props.name)
 }
 
 defineExpose({ sayHello })
