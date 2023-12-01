@@ -1,0 +1,37 @@
+{
+  "name": "@padcom/vue-interop",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@padcom/eslint-config-typescript": "^0.6.0",
+    "@padcom/eslint-config-vue": "^0.6.0",
+    "@types/object.fromentries": "^2.0.4",
+    "@vitejs/plugin-vue": "^4.5.1",
+    "@vue/reactivity": "^3.3.9",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.54.0",
+    "lit-html": "^3.1.0",
+    "typescript": "~5.0.4",
+    "vite": "^5.0.3",
+    "vite-plugin-eslint": "^1.8.1",
+    "vue": "^3.3.9",
+    "vuelit": "^0.3.0"
+  },
+  "eslintConfig": {
+    "extends": "@padcom/eslint-config-vue"
+  },
+  "author": "Matthias Hryniszak <padcom@gmail.com>",
+  "homepage": "https://github.com/padcom/vue-interop#readme",
+  "bugs": {
+    "url": "https://github.com/padcom/vue-interop/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/padcom/vue-interop.git"
+  }
+}
