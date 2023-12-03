@@ -29,7 +29,7 @@ export function defineCustomElement(
 
   function getComponentStyles() {
     // @ts-ignore The `styles` is not defined unless it is a .ce.vue file
-    return component.styles ? String(component.styles).trim() : false
+    return component.styles ? String(component.styles).trim() : null
   }
 
   function createStyles() {
