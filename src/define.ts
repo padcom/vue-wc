@@ -45,6 +45,15 @@ export function defineCustomElement(
     } as Slots
   }
 
+  // function removeUndefinedElementsFromSlots(root: Element, slots: Slots) {
+  //   const notDefinedTags = Array.from(root.querySelectorAll(':not(:defined)')).map(el => el.tagName)
+  //   Object.entries(slots).forEach(([name, elements]) => {
+  //     slots[name] = elements.filter(el => !notDefinedTags.includes(el.tagName))
+  //   })
+
+  //   return notDefinedTags
+  // }
+
   function removeSlotElements(slots: Slots) {
     Object.values(slots).forEach(slot => slot.forEach(element => element.remove()))
   }
