@@ -27,17 +27,23 @@ export function defineCustomElement(
     }
   }
 
-  function createStyle(element: Element | ShadowRoot) {
+  function createGlobalStyle() {
+    // @ts-ignore The `styles` is not defined unless it is a .ce.vue file
+    if (component.styles) {
+      const style = document.createElement('style')
+      // @ts-ignore The `style` is not defined unless it is a .ce.vue file
+      style.innerHTML = String(component.styles).trim()
+      document.head.appendChild(style)
+    }
+  }
+
+  function createElementStyle(element: Element | ShadowRoot) {
     // @ts-ignore The `styles` is not defined unless it is a .ce.vue file
     if (component.styles) {
       const style = document.createElement('style')
       // @ts-ignore The `style` is not defined unless it is a .ce.vue file
       style.innerHTML = String(component.styles).trim()
       element.appendChild(style)
-
-      return style
-    } else {
-      return null
     }
   }
 
@@ -138,6 +144,8 @@ export function defineCustomElement(
     }
   }
 
+  if (!shadowRoot) createGlobalStyle()
+
   return class extends HTMLElement {
     #slots: Slots
     #root: ShadowRoot | Element
@@ -148,8 +156,11 @@ export function defineCustomElement(
 
       this.#slots = collectSlotElements(this)
       removeSlotElements(this.#slots)
+
       this.#root = createRoot(this)
-      createStyle(this.#root)
+
+      if (shadowRoot) createElementStyle(this.#root)
+
       this.#instance = createVueComponentInstance(this.#root, this.#slots)
       exposeProps(this.#instance, this)
       exposeExposed(this.#instance, this)
