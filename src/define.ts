@@ -89,6 +89,15 @@ export function defineCustomElement(
     function wrapNodeInVueElement(el: Element, data: any) {
       return defineComponent({
         mounted() {
+          // Treating the given element as template so that multiple instances
+          // can be created from the given element.
+          // This has a limitation as of now that only HTML-specified elements
+          // that have already been created by the browser can be used.
+          // Don't know how this is going to behave when elements are added
+          // dynamically to the DOM. Probably it will be needed to re-create
+          // the entire element. For that to work the original slot elements
+          // need to be re-added to the DOM.
+          // Something to work on next...
           const content = el.cloneNode(true)
           // @ts-ignore Simulating scoped slots
           Object.entries(data).forEach(([name, value]) => { content[name] = value })
