@@ -50,3 +50,9 @@ const rows = ref([
   { id: 3, title: 'Thing no. 3' },
 ] as Array<Record<string, any>>)
 </script>
+
+<style lang="postcss" scoped>
+table {
+  border: solid 1px gray;
+}
+</style>

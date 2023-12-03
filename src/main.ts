@@ -1,7 +1,7 @@
 import './styles.css'
 
 import { defineCustomElement } from '.'
-import DataList from './DataList.vue'
+import DataList from './DataList.ce.vue'
 
 customElements.define('table-header', class extends HTMLElement {
   #placeholder: Text
@@ -20,7 +20,7 @@ customElements.define('table-header', class extends HTMLElement {
   }
 
   set column(newVal: any) {
-    console.log('Setting column:', newVal)
+    // console.log('Setting column:', newVal)
     this.#placeholder.data = `col-${newVal.id}`
   }
 })
@@ -52,13 +52,13 @@ customElements.define('table-cell', class extends HTMLElement {
   }
 
   set column(newVal: any) {
-    console.log('Setting column:', newVal)
+    // console.log('Setting column:', newVal)
     this.#column = newVal
     this.render()
   }
 
   set row(newVal: any) {
-    console.log('Setting row:', newVal)
+    // console.log('Setting row:', newVal)
     this.#row = newVal
     this.render()
   }

@@ -1,9 +1,0 @@
-:host {
-  font-family: 'Courier New', Courier, monospace;
-  display: grid;
-  place-items: center;
-}
-
-p {
-  margin-top: 4rem;
-}

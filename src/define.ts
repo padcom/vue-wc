@@ -27,6 +27,20 @@ export function defineCustomElement(
     }
   }
 
+  function createStyle(element: Element | ShadowRoot) {
+    // @ts-ignore The `styles` is not defined unless it is a .ce.vue file
+    if (component.styles) {
+      const style = document.createElement('style')
+      // @ts-ignore The `style` is not defined unless it is a .ce.vue file
+      style.innerHTML = String(component.styles).trim()
+      element.appendChild(style)
+
+      return style
+    } else {
+      return null
+    }
+  }
+
   function collectSlotElements(element: Element) {
     function walk(slots: Slots, root: Element): any {
       if (root.slot) {
@@ -135,6 +149,7 @@ export function defineCustomElement(
       this.#slots = collectSlotElements(this)
       removeSlotElements(this.#slots)
       this.#root = createRoot(this)
+      createStyle(this.#root)
       this.#instance = createVueComponentInstance(this.#root, this.#slots)
       exposeProps(this.#instance, this)
       exposeExposed(this.#instance, this)
