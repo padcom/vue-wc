@@ -1,17 +1,15 @@
 import { render, createVNode, type VNodeTypes, defineComponent } from 'vue'
 
-import Example from './Example.vue'
-
-interface Slots {
+export interface Slots {
   [key: string]: Element[]
 }
 
-interface DefineCustomElementOptions {
+export interface DefineCustomElementOptions {
   shadowRoot?: boolean | ShadowRootMode | ShadowRootInit
 }
 
 // eslint-disable-next-line max-lines-per-function
-function defineCustomElement(
+export function defineCustomElement(
   component: VNodeTypes,
   {
     shadowRoot = false,
@@ -47,13 +45,18 @@ function defineCustomElement(
     } as Slots
   }
 
+  function removeSlotElements(slots: Slots) {
+    Object.values(slots).forEach(slot => slot.forEach(element => element.remove()))
+  }
+
   function createVueComponentInstance(element: Element | ShadowRoot, slots: Record<string, Element[]>) {
     function wrapNodeInVueElement(el: Element, data: any) {
       return defineComponent({
         mounted() {
+          const content = el.cloneNode(true)
           // @ts-ignore Simulating scoped slots
-          Object.entries(data).forEach(([name, value]) => { el[name] = value })
-          this.$el.replaceWith(el)
+          Object.entries(data).forEach(([name, value]) => { content[name] = value })
+          this.$el.replaceWith(content)
         },
         render: () => null,
       })
@@ -121,6 +124,7 @@ function defineCustomElement(
       super()
 
       this.#slots = collectSlotElements(this)
+      removeSlotElements(this.#slots)
       this.#root = createRoot(this)
       this.#instance = createVueComponentInstance(this.#root, this.#slots)
       exposeProps(this.#instance, this)
@@ -129,20 +133,3 @@ function defineCustomElement(
     }
   }
 }
-
-customElements.define('test-component', class extends HTMLElement {
-  #placeholder: Text
-
-  constructor() {
-    super()
-
-    this.#placeholder = document.createTextNode('')
-    this.appendChild(this.#placeholder)
-  }
-
-  set test(newVal: any) {
-    this.#placeholder.data = newVal
-  }
-})
-
-customElements.define('example-component', defineCustomElement(Example, { shadowRoot: true }))

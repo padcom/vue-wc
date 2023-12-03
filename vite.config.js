@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import eslint from 'vite-plugin-eslint'
-import autoprefixer from 'autoprefixer'
+import dts from 'vite-plugin-dts'
 
 export default defineConfig({
   plugins: [
@@ -13,15 +13,12 @@ export default defineConfig({
       },
     }),
     eslint(),
+    dts({ rollupTypes: true }),
   ],
-  optimizeDeps: {
-    exclude: ['vuelit'],
-  },
-  css: {
-    postcss: {
-      plugins: [
-        autoprefixer(),
-      ],
+  build: {
+    lib: {
+      entry: './src/index.ts',
+      formats: ['es'],
     },
   },
 })

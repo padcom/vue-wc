@@ -3,23 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="module" src="./src/main.ts"></script>
 </head>
 <body>
-  <example-component>
-    <test-component slot="hello" />
-    <h3 slot="hello">hello slot</h3>
-    <h5>default slot</h5>
-    <h2 slot="hello">hello slot</h2>
-    <h4>default slot</h4>
-  </example-component>
-
-  <script type="module" src="./src/main.ts"></script>
-
-  <script>
-    document.querySelector('h2').addEventListener('click', () => console.log('h2 clicked'))
-    document.querySelector('h3').addEventListener('click', () => console.log('h3 clicked'))
-    document.querySelector('h4').addEventListener('click', () => console.log('h4 clicked'))
-    document.querySelector('h5').addEventListener('click', () => console.log('h5 clicked'))
-  </script>
+  <data-list>
+    <div slot="caption">Caption: Hello, world!</slot>
+    <table-header slot="th.id"></table-header>
+    <table-header slot="th.title"></table-header>
+    <table-cell slot="td.id"></table-cell>
+    <table-cell slot="td.title"></table-cell>
+  </data-list>
 </body>
 </html>
