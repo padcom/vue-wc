@@ -1,4 +1,11 @@
-import { render, createVNode, type VNodeTypes, defineComponent } from 'vue'
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import {
+  render,
+  createVNode,
+  defineComponent,
+  type VNodeTypes,
+  type ComponentInternalInstance,
+} from 'vue'
 
 export interface Slots {
   [key: string]: Element[]
@@ -85,7 +92,16 @@ export function defineCustomElement(
     Object.values(slots).forEach(slot => slot.forEach(element => element.remove()))
   }
 
-  function createVueComponentInstance(element: Element | ShadowRoot, slots: Record<string, Element[]>) {
+  function getAttributes(element: Element) {
+    return Object.fromEntries(element.getAttributeNames().map(attr => [attr, element.getAttribute(attr)]))
+  }
+
+  // eslint-disable-next-line max-lines-per-function
+  function createVueComponentInstance(
+    element: Element | ShadowRoot,
+    attrs: Record<string, string | null>,
+    slots: Record<string, Element[]>,
+  ) {
     function wrapNodeInVueElement(el: Element, data: any) {
       return defineComponent({
         mounted() {
@@ -112,13 +128,13 @@ export function defineCustomElement(
       (data: any) => elements.map(el => createVNode(wrapNodeInVueElement(el, data))),
     ]))
 
-    const result = createVNode(component, null, nodes)
+    const result = createVNode(component, attrs, nodes)
     render(result, element)
 
     return result.component
   }
 
-  function exposeProps(instance: any, element: Node) {
+  function exposeProps(instance: ComponentInternalInstance, element: Node) {
     Object.keys(instance.props).forEach(prop => {
       Object.defineProperty(element, prop, {
         get() {
@@ -163,24 +179,21 @@ export function defineCustomElement(
   if (!shadowRoot) createGlobalStyle()
 
   return class extends HTMLElement {
-    #slots: Slots
-    #root: ShadowRoot | Element
-    #instance: any
-
     constructor() {
       super()
 
-      this.#slots = collectSlotElements(this)
-      removeSlotElements(this.#slots)
+      const slots = collectSlotElements(this)
+      removeSlotElements(slots)
 
-      this.#root = createRoot(this)
+      const root = createRoot(this)
+      if (shadowRoot) createElementStyle(root)
 
-      if (shadowRoot) createElementStyle(this.#root)
-
-      this.#instance = createVueComponentInstance(this.#root, this.#slots)
-      exposeProps(this.#instance, this)
-      exposeExposed(this.#instance, this)
-      exposeEvents(this.#instance, this)
+      const instance = createVueComponentInstance(root, getAttributes(this), slots)
+      if (instance) {
+        exposeProps(instance, this)
+        exposeExposed(instance, this)
+        exposeEvents(instance, this)
+      }
     }
   }
 }

@@ -52,7 +52,7 @@ const rows = ref([
 </script>
 
 <style lang="postcss" scoped>
-table {
+caption {
   border: solid 1px gray;
 }
 </style>
