@@ -27,24 +27,31 @@ export function defineCustomElement(
     }
   }
 
-  function createGlobalStyle() {
+  function getComponentStyles() {
     // @ts-ignore The `styles` is not defined unless it is a .ce.vue file
-    if (component.styles) {
+    return component.styles ? String(component.styles).trim() : false
+  }
+
+  function createStyles() {
+    const css = getComponentStyles()
+    if (css) {
       const style = document.createElement('style')
-      // @ts-ignore The `style` is not defined unless it is a .ce.vue file
-      style.innerHTML = String(component.styles).trim()
-      document.head.appendChild(style)
+      style.innerHTML = css
+
+      return style
+    } else {
+      return null
     }
   }
 
+  function createGlobalStyle() {
+    const style = createStyles()
+    if (style) document.head.appendChild(style)
+  }
+
   function createElementStyle(element: Element | ShadowRoot) {
-    // @ts-ignore The `styles` is not defined unless it is a .ce.vue file
-    if (component.styles) {
-      const style = document.createElement('style')
-      // @ts-ignore The `style` is not defined unless it is a .ce.vue file
-      style.innerHTML = String(component.styles).trim()
-      element.appendChild(style)
-    }
+    const style = createStyles()
+    if (style) element.appendChild(style)
   }
 
   function collectSlotElements(element: Element) {
