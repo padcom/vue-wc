@@ -3,3 +3,12 @@ html, body {
   display: grid;
   place-items: center;
 }
+
+data-list {
+  & table-cell:first-of-type,
+  & table-header:first-of-type {
+    @media (max-width: 800px) {
+      display: none;
+    }
+  }
+}
