@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script type="module" src="./src/main.ts"></script>
 </head>
+
 <body>
+  <div id="app"></div>
+
   <data-list border="1">
-    <div slot="caption">Hello, world!</slot>
+    <div slot="caption">Hello, world! 1</div>
+    <div slot="caption">Hello, world! 2</div>
     <table-header slot="th.id"></table-header>
     <table-header slot="th.title"></table-header>
     <table-cell slot="td.id"></table-cell>
     <table-cell slot="td.title"></table-cell>
   </data-list>
 </body>
+
 </html>

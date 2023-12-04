@@ -21,6 +21,8 @@
       </tr>
     </tbody>
   </table>
+
+  <button @click="update">Click me!</button>
 </template>
 
 <script lang="ts" setup>
@@ -49,6 +51,10 @@ const rows = ref([
   { id: 2, title: 'Thing no. 2' },
   { id: 3, title: 'Thing no. 3' },
 ] as Array<Record<string, any>>)
+
+function update() {
+  rows.value[1].title = 'changed'
+}
 </script>
 
 <style lang="postcss" scoped>

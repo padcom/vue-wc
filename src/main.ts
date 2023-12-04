@@ -20,7 +20,6 @@ customElements.define('table-header', class extends HTMLElement {
   }
 
   set column(newVal: any) {
-    // console.log('Setting column:', newVal)
     this.#placeholder.data = `col-${newVal.id}`
   }
 })
@@ -52,13 +51,15 @@ customElements.define('table-cell', class extends HTMLElement {
   }
 
   set column(newVal: any) {
-    // console.log('Setting column:', newVal)
     this.#column = newVal
     this.render()
   }
 
+  get row() {
+    return this.#row
+  }
+
   set row(newVal: any) {
-    // console.log('Setting row:', newVal)
     this.#row = newVal
     this.render()
   }
@@ -66,3 +67,20 @@ customElements.define('table-cell', class extends HTMLElement {
 
 // TODO: figure out how to make it independent that this component needs to be defined last!
 customElements.define('data-list', defineCustomElement(DataList, { shadowRoot: false }))
+
+import { randomString } from './random-string'
+
+// Dynamically put together a <data-list>
+const table = document.createElement('data-list')
+const idHeaderTemplate = document.createElement('table-header')
+idHeaderTemplate.slot = 'th.id'
+idHeaderTemplate.addEventListener('click', () => { console.log('ID Header clicked') })
+table.appendChild(idHeaderTemplate)
+const idCellTemplate = document.createElement('table-cell')
+idCellTemplate.slot = 'td.id'
+// @ts-ignore xxx
+idCellTemplate.addEventListener('click', e => { console.log('ID cell clicked', e.target.row.title = randomString()) })
+table.appendChild(idCellTemplate)
+
+const app = document.querySelector('#app')
+app?.appendChild(table)
