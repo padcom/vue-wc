@@ -72,6 +72,8 @@ import { randomString } from './random-string'
 
 // Dynamically put together a <data-list>
 const table = document.createElement('data-list')
+// @ts-ignore Somehow the given event handler doesn't fit the type definition
+table.addEventListener('hello-world', (e: CustomEvent) => { console.log('Table says:', e.detail) })
 const idHeaderTemplate = document.createElement('table-header')
 idHeaderTemplate.slot = 'th.id'
 idHeaderTemplate.addEventListener('click', () => { console.log('ID Header clicked') })
