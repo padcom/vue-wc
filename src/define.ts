@@ -1,5 +1,4 @@
 /* eslint-disable promise/prefer-await-to-callbacks */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   ref,
   render,
